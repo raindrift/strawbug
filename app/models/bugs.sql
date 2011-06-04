@@ -1,4 +1,6 @@
-create table 'bugs' (
+drop table if exists bugs;
+
+create table bugs (
 	id int not null auto_increment primary key,
 	creator_user_id int not null,
 	assigned_user_id int,

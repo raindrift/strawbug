@@ -1,4 +1,6 @@
-create table 'notes' (
+drop table if exists notes;
+
+create table notes (
 	id int not null auto_increment primary key,
 	creator_user_id int not null,
 	type enum('comment', 'status_change') not null default 'comment',
@@ -6,5 +8,5 @@ create table 'notes' (
 	modified datetime not null,
 
 	key creator (creator_user_id),
-	key created (created),
+	key created (created)
 ) type = myisam;

@@ -33,4 +33,8 @@
  * @link http://book.cakephp.org/view/957/The-App-Controller
  */
 class AppController extends Controller {
+	// AppController's components are NOT merged with defaults,
+	// so session component is lost if it's not included here!
+	// The entire app is authenticated, so auth everywhere is okay.
+	var $components = array('Auth', 'Session');
 }
