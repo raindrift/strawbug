@@ -10,7 +10,8 @@ class User extends AppModel
 		'BugsOwned' => array(
 			'className' => 'Bug',
 			'foreignKey' => 'owner_id',
-		)
+		),
+		'Note',
 	);
 }
 ?>
