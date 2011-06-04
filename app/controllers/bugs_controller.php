@@ -21,7 +21,6 @@ class BugsController extends AppController {
 			$this->Bug->create();
 
 			$user = $this->Auth->user();
-			print_r($user);
 
 			$this->data{'Bug'}{'user_id'} = $user{'User'}{'id'};
 
@@ -32,15 +31,14 @@ class BugsController extends AppController {
 			
 			if ($this->Bug->save($this->data)) {
 				$this->Session->setFlash(__('The bug has been saved', true));
-				$this->redirect(array('action' => 'index'));
+				#$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The bug could not be saved. Please, try again.', true));
 			}
 		}
-		
-		$owners{''} = '-----';
 
-		$owners = array_merge($owners, $this->Bug->Owner->find('list'));		
+		$owners = $this->Bug->Owner->find('list');
+		$owners{0} = '-';
 		$this->set(compact('owners'));
 		
 		$statusOptions = $this->Bug->enumOptions('status');
@@ -59,6 +57,8 @@ class BugsController extends AppController {
 			if($this->data{'Bug'}{'owner_id'} && $this->data{'Bug'}{'status'} == 'new') {
 				$this->data{'Bug'}{'status'} = 'assigned';
 			}
+			
+			# TODO: save a note here with info about any status change.
 			
 			if ($this->Bug->save($this->data)) {
 				$this->Session->setFlash(__('The bug has been saved', true));

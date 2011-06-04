@@ -21,7 +21,7 @@ class NotesController extends AppController {
 			$this->Note->create();
 			if ($this->Note->save($this->data)) {
 				$this->Session->setFlash(__('The note has been saved', true));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->Note->Bug->id));
 			} else {
 				$this->Session->setFlash(__('The note could not be saved. Please, try again.', true));
 			}
@@ -34,12 +34,12 @@ class NotesController extends AppController {
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid note', true));
-			$this->redirect(array('action' => 'index'));
+			$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->Note->Bug->id));
 		}
 		if (!empty($this->data)) {
 			if ($this->Note->save($this->data)) {
 				$this->Session->setFlash(__('The note has been saved', true));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->data{'Note'}{'bug_id'}));
 			} else {
 				$this->Session->setFlash(__('The note could not be saved. Please, try again.', true));
 			}

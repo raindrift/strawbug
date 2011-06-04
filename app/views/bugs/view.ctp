@@ -61,13 +61,10 @@
 	<?php if (!empty($bug['Note'])):?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
-		<th><?php __('Id'); ?></th>
-		<th><?php __('Bug Id'); ?></th>
 		<th><?php __('User Id'); ?></th>
 		<th><?php __('Type'); ?></th>
 		<th><?php __('Content'); ?></th>
 		<th><?php __('Created'); ?></th>
-		<th><?php __('Modified'); ?></th>
 		<th class="actions"><?php __('Actions');?></th>
 	</tr>
 	<?php
@@ -79,13 +76,10 @@
 			}
 		?>
 		<tr<?php echo $class;?>>
-			<td><?php echo $note['id'];?></td>
-			<td><?php echo $note['bug_id'];?></td>
 			<td><?php echo $note['user_id'];?></td>
 			<td><?php echo $note['type'];?></td>
 			<td><?php echo $note['content'];?></td>
 			<td><?php echo $note['created'];?></td>
-			<td><?php echo $note['modified'];?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'notes', 'action' => 'view', $note['id'])); ?>
 				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'notes', 'action' => 'edit', $note['id'])); ?>

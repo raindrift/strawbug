@@ -16,6 +16,13 @@ class UsersController extends AppController {
 	}
 
 	function view($id = null) {
+		# view the currently logged in account by default.
+		$user = $this->Auth->user();
+
+		if(!$id) {
+			$id = $user{'User'}{'id'};
+		}
+		
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid user', true));
 			$this->redirect(array('action' => 'index'));
@@ -35,7 +42,7 @@ class UsersController extends AppController {
 		}
 	}
 
-	function edit($id = null) {
+	function edit($id = null) {		
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid user', true));
 			$this->redirect(array('action' => 'index'));

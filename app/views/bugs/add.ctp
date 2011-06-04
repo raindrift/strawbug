@@ -3,7 +3,7 @@
 	<fieldset>
 		<legend><?php __('Add Bug'); ?></legend>
 	<?php
-		echo $this->Form->input('owner_id');
+		echo $this->Form->input('owner_id', array('selected' => '0'));
 		echo $this->Form->input('title');
 		echo $this->Form->input('content');
 	?>
