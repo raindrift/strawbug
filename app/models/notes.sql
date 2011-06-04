@@ -4,6 +4,7 @@ create table notes (
 	id int not null auto_increment primary key,
 	creator_user_id int not null,
 	type enum('comment', 'status_change') not null default 'comment',
+	content text,
 	created datetime not null,
 	modified datetime not null,
 

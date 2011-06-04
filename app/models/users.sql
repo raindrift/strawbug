@@ -13,3 +13,9 @@ create table users (
     unique user_email_unique (username, email),
 	key email (email)
 ) type = myisam;
+
+-- Note: this is a default password, 'admin', but it will only work if the password salt doesn't change
+insert into users (first_name, username, password) values ('Admin', 'admin', 'ce2bf1519ebc624253b6f845111b06660c57f233');
+	
+-- Note: this temporary password is 'user'.  see caveat above.
+insert into users (first_name, username, password) values ('User', 'user', '9773c961590d1af1c2f40d0085af891a818112a2');
