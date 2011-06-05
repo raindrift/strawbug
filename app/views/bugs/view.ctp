@@ -46,18 +46,19 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Edit Bug', true), array('action' => 'edit', $bug['Bug']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Delete Bug', true), array('action' => 'delete', $bug['Bug']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bug['Bug']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Bugs', true), array('action' => 'index')); ?> </li>
+		<?php if($bugPermissions{'update'}) { ?>
+			<li><?php echo $this->Html->link(__('Edit Bug', true), array('action' => 'edit', $bug['Bug']['id'])); ?> </li>
+		<?php } ?>
+		
+		<?php if($bugPermissions{'delete'}) { ?>
+			<li><?php echo $this->Html->link(__('Delete Bug', true), array('action' => 'delete', $bug['Bug']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bug['Bug']['id'])); ?> </li>
+		<?php } ?>
 		<li><?php echo $this->Html->link(__('New Bug', true), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users', true), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Creator', true), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Notes', true), array('controller' => 'notes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Note', true), array('controller' => 'notes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('All Bugs', true), array('action' => 'index')); ?> </li>
 	</ul>
 </div>
 <div class="related">
-	<h3><?php __('Related Notes');?></h3>
+	<h3><?php __('Notes');?></h3>
 	<?php if (!empty($bug['Note'])):?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
@@ -65,7 +66,9 @@
 		<th><?php __('Type'); ?></th>
 		<th><?php __('Content'); ?></th>
 		<th><?php __('Created'); ?></th>
+		<?php if($bugPermissions{'delete'}) { ?>
 		<th class="actions"><?php __('Actions');?></th>
+		<?php } ?>
 	</tr>
 	<?php
 		$i = 0;
@@ -80,11 +83,11 @@
 			<td><?php echo $note['type'];?></td>
 			<td><?php echo $note['content'];?></td>
 			<td><?php echo $note['created'];?></td>
+			<?php if($bugPermissions{'delete'}) { ?>
 			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'notes', 'action' => 'view', $note['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'notes', 'action' => 'edit', $note['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'notes', 'action' => 'delete', $note['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $note['id'])); ?>
+					<?php echo $this->Html->link(__('Delete', true), array('controller' => 'notes', 'action' => 'delete', $note['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $note['id'])); ?>
 			</td>
+			<?php } ?>
 		</tr>
 	<?php endforeach; ?>
 	</table>

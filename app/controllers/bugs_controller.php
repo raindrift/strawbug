@@ -8,10 +8,32 @@ class BugsController extends AppController {
 		$this->set('bugs', $this->paginate());
 
 		if($this->Acl->check(array('model' => 'User', 'foreign_key' => $this->Auth->user('id')), 'User', 'create')) {
-			$this->set('isadmin', true);
+			$userPermissions{'create'} = true;
 		} else {
-			$this->set('isadmin', false);
+			$userPermissions{'create'} = false;
 		}
+
+		$this->set('userPermissions', $userPermissions);
+		
+		if(
+			$this->Acl->check(array('model' => 'User', 'foreign_key' => $this->Auth->user('id')), 'Bug', 'update')
+		) {
+			$bugPermissions{'update'} = true;
+		} else {
+			$bugPermissions{'update'} = false;
+		}
+		
+		if($this->Acl->check(
+			array('model' => 'User', 'foreign_key' => $this->Auth->user('id')),
+			'Bug',
+			'delete'
+		)) {
+			$bugPermissions{'delete'} = true;
+		} else {
+			$bugPermissions{'delete'} = false;
+		};
+
+		$this->set('bugPermissions', $bugPermissions);
 	}
 
 	function view($id = null) {
@@ -28,6 +50,26 @@ class BugsController extends AppController {
 				'recursive' => 2,
 			)
 		));
+		
+		if(
+			$this->Acl->check(array('model' => 'User', 'foreign_key' => $this->Auth->user('id')), 'Bug', 'update')
+		) {
+			$bugPermissions{'update'} = true;
+		} else {
+			$bugPermissions{'update'} = false;
+		}
+		
+		if($this->Acl->check(
+			array('model' => 'User', 'foreign_key' => $this->Auth->user('id')),
+			'Bug',
+			'delete'
+		)) {
+			$bugPermissions{'delete'} = true;
+		} else {
+			$bugPermissions{'delete'} = false;
+		};
+
+		$this->set('bugPermissions', $bugPermissions);
 	}
 
 	function add() {
@@ -118,6 +160,18 @@ class BugsController extends AppController {
 		$statusOptions = array_combine(array_values($statusOptions), array_values($statusOptions));  #FormHelper wants keys & values.
 		
 		$this->set(compact('statusOptions'));
+		
+		if($this->Acl->check(
+			array('model' => 'User', 'foreign_key' => $this->Auth->user('id')),
+			'Bug',
+			'delete'
+		)) {
+			$bugPermissions{'delete'} = true;
+		} else {
+			$bugPermissions{'delete'} = false;
+		};
+
+		$this->set('bugPermissions', $bugPermissions);
 	}
 
 	function delete($id = null) {

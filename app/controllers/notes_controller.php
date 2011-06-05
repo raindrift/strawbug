@@ -21,4 +21,30 @@ class NotesController extends AppController {
 			$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->data{'Note'}{'bug_id'}));
 		}
 	}
+	
+	function delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for note', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		
+		if(!$this->Acl->check(
+			array('model' => 'User', 'foreign_key' => $this->Auth->user('id')),
+			'Bug',
+			'delete'
+		)) {
+			$this->Session->setFlash(__('Insufficient permissions to delete this note.', true));
+			$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->data{'Note'}{'bug_id'}));
+		};
+		
+		# fetch so that it's possible to redirect.
+		$this->data = $this->Note->read(null, $id);
+				
+		if ($this->Note->delete($id)) {
+			$this->Session->setFlash(__('Note deleted', true));
+			$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->data{'Note'}{'bug_id'}));
+		}
+		$this->Session->setFlash(__('Note was not deleted', true));
+		$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->data{'Note'}{'bug_id'}));
+	}
 }

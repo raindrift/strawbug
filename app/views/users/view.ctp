@@ -37,16 +37,15 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		
-		<?php if($userPermissions{'edit'}) { ?>
+		<?php if($userPermissions{'update'}) { ?>
 			<li><?php echo $this->Html->link(__('Edit User', true), array('action' => 'edit', $user['User']['id'])); ?> </li>
 		<?php } ?>
 		
 		<?php if($userPermissions{'delete'}) { ?>
-		<li><?php echo $this->Html->link(__('Delete User', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?> </li>
+			<li><?php echo $this->Html->link(__('Delete User', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?> </li>
 		<?php } ?>
 		
-		<li><?php echo $this->Html->link(__('List Users', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Bugs', true), array('controller' => 'bugs', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('All Users', true), array('action' => 'index')); ?> </li>
 	</ul>
 </div>
 
@@ -56,8 +55,7 @@
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php __('Id'); ?></th>
-		<th><?php __('User Id'); ?></th>
-		<th><?php __('Owner Id'); ?></th>
+		<th><?php __('Creator'); ?></th>
 		<th><?php __('Title'); ?></th>
 		<th><?php __('Status'); ?></th>
 		<th><?php __('Created'); ?></th>
@@ -74,16 +72,21 @@
 		?>
 		<tr<?php echo $class;?>>
 			<td><?php echo $bugsOwned['id'];?></td>
-			<td><?php echo $bugsOwned['user_id'];?></td>
-			<td><?php echo $bugsOwned['owner_id'];?></td>
+			<td><?php echo $bugsOwned['Creator']['name'];?></td>
 			<td><?php echo $bugsOwned['title'];?></td>
 			<td><?php echo $bugsOwned['status'];?></td>
 			<td><?php echo $bugsOwned['created'];?></td>
 			<td><?php echo $bugsOwned['modified'];?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'bugs', 'action' => 'view', $bugsOwned['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'bugs', 'action' => 'edit', $bugsOwned['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'bugs', 'action' => 'delete', $bugsOwned['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bugsOwned['id'])); ?>
+
+				<?php if($bugPermissions{'update'}) { ?>
+					<?php echo $this->Html->link(__('Edit', true), array('controller' => 'bugs', 'action' => 'edit', $bugsOwned['id'])); ?>
+				<?php } ?>
+
+				<?php if($bugPermissions{'delete'}) { ?>
+					<?php echo $this->Html->link(__('Delete', true), array('controller' => 'bugs', 'action' => 'delete', $bugsOwned['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bugsOwned['id'])); ?>
+				<?php } ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -97,8 +100,7 @@
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php __('Id'); ?></th>
-		<th><?php __('User Id'); ?></th>
-		<th><?php __('Owner Id'); ?></th>
+		<th><?php __('Owner'); ?></th>
 		<th><?php __('Title'); ?></th>
 		<th><?php __('Status'); ?></th>
 		<th><?php __('Created'); ?></th>
@@ -115,16 +117,21 @@
 		?>
 		<tr<?php echo $class;?>>
 			<td><?php echo $bugsCreated['id'];?></td>
-			<td><?php echo $bugsCreated['user_id'];?></td>
-			<td><?php echo $bugsCreated['owner_id'];?></td>
+			<td><?php if(array_key_exists('name', $bugsCreated['Owner'])) echo $bugsCreated['Owner']['name']; ?></td>
 			<td><?php echo $bugsCreated['title'];?></td>
 			<td><?php echo $bugsCreated['status'];?></td>
 			<td><?php echo $bugsCreated['created'];?></td>
 			<td><?php echo $bugsCreated['modified'];?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'bugs', 'action' => 'view', $bugsCreated['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'bugs', 'action' => 'edit', $bugsCreated['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'bugs', 'action' => 'delete', $bugsCreated['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bugsCreated['id'])); ?>
+
+				<?php if($bugPermissions{'update'}) { ?>
+					<?php echo $this->Html->link(__('Edit', true), array('controller' => 'bugs', 'action' => 'edit', $bugsCreated['id'])); ?>
+				<?php } ?>
+
+				<?php if($bugPermissions{'delete'}) { ?>
+					<?php echo $this->Html->link(__('Delete', true), array('controller' => 'bugs', 'action' => 'delete', $bugsCreated['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bugsCreated['id'])); ?>
+				<?php } ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>

@@ -31,8 +31,14 @@
 		<td><?php echo $bug['Bug']['created']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $bug['Bug']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $bug['Bug']['id'])); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $bug['Bug']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bug['Bug']['id'])); ?>
+
+			<?php if($bugPermissions{'update'}) { ?>
+				<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $bug['Bug']['id'])); ?>
+			<?php } ?>
+			
+			<?php if($bugPermissions{'delete'}) { ?>
+				<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $bug['Bug']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bug['Bug']['id'])); ?>
+			<?php } ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -55,14 +61,11 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('New Bug', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Users', true), array('controller' => 'users', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('My Account', true), array('controller' => 'users', 'action' => 'view')); ?> </li>
-	</ul>
+		<li><?php echo $this->Html->link(__('All Users', true), array('controller' => 'users', 'action' => 'index')); ?> </li>
 	
-	<?php if($isadmin) { ?>
-	<ul>
-		<li>Admin</li>
-		<li><?php echo $this->Html->link(__('New User', true), array('controller' => 'users', 'action' => 'add')); ?> </li>
+		<?php if($userPermissions{'create'}) { ?>
+			<li><?php echo $this->Html->link(__('Add User', true), array('controller' => 'users', 'action' => 'add')); ?> </li>
+		<?php } ?>
 	</ul>
-	<?php } ?>
 </div>

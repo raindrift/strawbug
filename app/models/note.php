@@ -6,5 +6,7 @@ class Note extends AppModel
 		'User',
 		'Bug',
 	);
+	
+	# TODO: validation goes here.
 }
 ?>

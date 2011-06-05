@@ -18,5 +18,7 @@ class Bug extends AppModel
 	
 	# This behavior allows me to create a <select> list from the options in a mysql enum() type.
 	var $actsAs = array('Enumerable');
+	
+	# TODO: validation goes here.
 }
 ?>

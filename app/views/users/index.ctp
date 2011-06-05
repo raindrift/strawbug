@@ -25,8 +25,13 @@
 		<td><?php echo $user['User']['modified']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $user['User']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $user['User']['id'])); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?>
+			<?php if($userPermissions{'update'}) { ?>
+				<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $user['User']['id'])); ?>
+			<?php } ?>
+			
+			<?php if($userPermissions{'delete'}) { ?>
+				<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?>
+			<?php } ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -48,8 +53,10 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New User', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Bugs', true), array('controller' => 'bugs', 'action' => 'index')); ?> </li>
+		<?php if($userPermissions{'create'}) { ?>
+			<li><?php echo $this->Html->link(__('Add User', true), array('action' => 'add')); ?></li>
+		<?php } ?>
+		<li><?php echo $this->Html->link(__('All Bugs', true), array('controller' => 'bugs', 'action' => 'index')); ?> </li>
 
 	</ul>
 </div>
