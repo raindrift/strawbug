@@ -25,7 +25,31 @@ class UsersController extends AppController {
 			$this->Session->setFlash(__('Invalid user', true));
 			$this->redirect(array('action' => 'index'));
 		}
+		
 		$this->set('user', $this->User->read(null, $id));
+		$userPermissions = array();
+
+		# user editing is allowed if this is the user's own account, or if the ACL permits it.
+		if(
+			$this->Acl->check(array('model' => 'User', 'foreign_key' => $this->Auth->user('id')), 'User', 'update') ||
+			$this->User->data{'User'}{'id'} == $this->Auth->user('id')
+		) {
+			$userPermissions{'edit'} = true;
+		} else {
+			$userPermissions{'edit'} = false;
+		}
+		
+		if($this->Acl->check(
+			array('model' => 'User', 'foreign_key' => $this->Auth->user('id')),
+			'User',
+			'update'
+		)) {
+			$userPermissions{'delete'} = true;
+		} else {
+			$userPermissions{'delete'} = false;
+		};
+
+		$this->set('userPermissions', $userPermissions);
 	}
 
 	function add() {

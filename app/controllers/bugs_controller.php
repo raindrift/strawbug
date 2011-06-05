@@ -14,10 +14,6 @@ class BugsController extends AppController {
 		}
 	}
 
-	function foo() {
-		print_r("foo");
-	}
-
 	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid bug', true));
