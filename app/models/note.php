@@ -7,6 +7,12 @@ class Note extends AppModel
 		'Bug',
 	);
 	
-	# TODO: validation goes here.
+	var $validate = array(
+		'content' => array(
+			'rule' => 'notEmpty',
+			'allowEmpty' => false,
+			'message' => 'Message content cannot be blank.'
+		),
+	);
 }
 ?>

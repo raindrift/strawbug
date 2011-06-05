@@ -14,6 +14,7 @@ class User extends AppModel
 		),
 		'Note',
 	);
+
 	var $validate = array(
 		'username' => array(
 			'rule' => 'alphaNumeric',

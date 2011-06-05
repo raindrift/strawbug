@@ -19,6 +19,17 @@ class Bug extends AppModel
 	# This behavior allows me to create a <select> list from the options in a mysql enum() type.
 	var $actsAs = array('Enumerable');
 	
-	# TODO: validation goes here.
+	var $validate = array(
+		'title' => array(
+			'rule' => 'notEmpty',
+			'allowEmpty' => false,
+			'message' => 'Bug title cannot be blank.'
+		),
+		'content' => array(
+			'rule' => 'notEmpty',
+			'allowEmpty' => false,
+			'message' => 'Bug content cannot be blank.'
+		),
+	);
 }
 ?>
