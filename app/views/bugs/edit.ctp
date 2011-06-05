@@ -4,7 +4,7 @@
 		<legend><?php __('Edit Bug'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('owner_id');
+		echo $this->Form->input('owner_id', array('empty' => '-'));
 		echo $this->Form->input('title');
 		echo $form->input('status', array('options' => $statusOptions));
 		echo $this->Form->input('content');

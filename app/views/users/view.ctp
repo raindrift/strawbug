@@ -51,56 +51,9 @@
 		<li><?php echo $this->Html->link(__('New Note', true), array('controller' => 'notes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
-<div class="related">
-	<h3><?php __('Related Bugs');?></h3>
-	<?php if (!empty($user['BugsCreated'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php __('Id'); ?></th>
-		<th><?php __('User Id'); ?></th>
-		<th><?php __('Owner Id'); ?></th>
-		<th><?php __('Title'); ?></th>
-		<th><?php __('Status'); ?></th>
-		<th><?php __('Content'); ?></th>
-		<th><?php __('Created'); ?></th>
-		<th><?php __('Modified'); ?></th>
-		<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($user['BugsCreated'] as $bugsCreated):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
-		<tr<?php echo $class;?>>
-			<td><?php echo $bugsCreated['id'];?></td>
-			<td><?php echo $bugsCreated['user_id'];?></td>
-			<td><?php echo $bugsCreated['owner_id'];?></td>
-			<td><?php echo $bugsCreated['title'];?></td>
-			<td><?php echo $bugsCreated['status'];?></td>
-			<td><?php echo $bugsCreated['content'];?></td>
-			<td><?php echo $bugsCreated['created'];?></td>
-			<td><?php echo $bugsCreated['modified'];?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'bugs', 'action' => 'view', $bugsCreated['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'bugs', 'action' => 'edit', $bugsCreated['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'bugs', 'action' => 'delete', $bugsCreated['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bugsCreated['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Bugs Created', true), array('controller' => 'bugs', 'action' => 'add'));?> </li>
-		</ul>
-	</div>
-</div>
 <div class="related">
-	<h3><?php __('Related Bugs');?></h3>
+	<h3><?php __('My Bugs');?></h3>
 	<?php if (!empty($user['BugsOwned'])):?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
@@ -147,15 +100,17 @@
 		</ul>
 	</div>
 </div>
+
 <div class="related">
-	<h3><?php __('Related Notes');?></h3>
-	<?php if (!empty($user['Note'])):?>
+	<h3><?php __('Bugs I Created');?></h3>
+	<?php if (!empty($user['BugsCreated'])):?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php __('Id'); ?></th>
-		<th><?php __('Bug Id'); ?></th>
 		<th><?php __('User Id'); ?></th>
-		<th><?php __('Type'); ?></th>
+		<th><?php __('Owner Id'); ?></th>
+		<th><?php __('Title'); ?></th>
+		<th><?php __('Status'); ?></th>
 		<th><?php __('Content'); ?></th>
 		<th><?php __('Created'); ?></th>
 		<th><?php __('Modified'); ?></th>
@@ -163,24 +118,25 @@
 	</tr>
 	<?php
 		$i = 0;
-		foreach ($user['Note'] as $note):
+		foreach ($user['BugsCreated'] as $bugsCreated):
 			$class = null;
 			if ($i++ % 2 == 0) {
 				$class = ' class="altrow"';
 			}
 		?>
 		<tr<?php echo $class;?>>
-			<td><?php echo $note['id'];?></td>
-			<td><?php echo $note['bug_id'];?></td>
-			<td><?php echo $note['user_id'];?></td>
-			<td><?php echo $note['type'];?></td>
-			<td><?php echo $note['content'];?></td>
-			<td><?php echo $note['created'];?></td>
-			<td><?php echo $note['modified'];?></td>
+			<td><?php echo $bugsCreated['id'];?></td>
+			<td><?php echo $bugsCreated['user_id'];?></td>
+			<td><?php echo $bugsCreated['owner_id'];?></td>
+			<td><?php echo $bugsCreated['title'];?></td>
+			<td><?php echo $bugsCreated['status'];?></td>
+			<td><?php echo $bugsCreated['content'];?></td>
+			<td><?php echo $bugsCreated['created'];?></td>
+			<td><?php echo $bugsCreated['modified'];?></td>
 			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'notes', 'action' => 'view', $note['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'notes', 'action' => 'edit', $note['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'notes', 'action' => 'delete', $note['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $note['id'])); ?>
+				<?php echo $this->Html->link(__('View', true), array('controller' => 'bugs', 'action' => 'view', $bugsCreated['id'])); ?>
+				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'bugs', 'action' => 'edit', $bugsCreated['id'])); ?>
+				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'bugs', 'action' => 'delete', $bugsCreated['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $bugsCreated['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -189,7 +145,7 @@
 
 	<div class="actions">
 		<ul>
-			<li><?php echo $this->Html->link(__('New Note', true), array('controller' => 'notes', 'action' => 'add'));?> </li>
+			<li><?php echo $this->Html->link(__('New Bugs Created', true), array('controller' => 'bugs', 'action' => 'add'));?> </li>
 		</ul>
 	</div>
 </div>

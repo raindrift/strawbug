@@ -6,6 +6,16 @@ class BugsController extends AppController {
 	function index() {
 		$this->Bug->recursive = 0;
 		$this->set('bugs', $this->paginate());
+
+		if($this->Acl->check(array('model' => 'User', 'foreign_key' => $this->Auth->user('id')), 'User', 'create')) {
+			$this->set('isadmin', true);
+		} else {
+			$this->set('isadmin', false);
+		}
+	}
+
+	function foo() {
+		print_r("foo");
 	}
 
 	function view($id = null) {
@@ -13,16 +23,22 @@ class BugsController extends AppController {
 			$this->Session->setFlash(__('Invalid bug', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('bug', $this->Bug->read(null, $id));
+		
+		# using find here and turning up the recursive parameter gives access
+		# to the the data linked from the Notes.
+		$this->set('bug', $this->Bug->find('first',
+			array(
+				'conditions' => array('Bug.id' => $id),
+				'recursive' => 2,
+			)
+		));
 	}
 
 	function add() {
 		if (!empty($this->data)) {
 			$this->Bug->create();
 
-			$user = $this->Auth->user();
-
-			$this->data{'Bug'}{'user_id'} = $user{'User'}{'id'};
+			$this->data{'Bug'}{'user_id'} = $this->Auth->user('id');
 
 			# if the bug is assigned, set the status immediately.
 			if($this->data{'Bug'}{'owner_id'}) {
@@ -31,14 +47,13 @@ class BugsController extends AppController {
 			
 			if ($this->Bug->save($this->data)) {
 				$this->Session->setFlash(__('The bug has been saved', true));
-				#$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The bug could not be saved. Please, try again.', true));
 			}
 		}
 
 		$owners = $this->Bug->Owner->find('list');
-		$owners{0} = '-';
 		$this->set(compact('owners'));
 		
 		$statusOptions = $this->Bug->enumOptions('status');
@@ -53,28 +68,45 @@ class BugsController extends AppController {
 		}
 		if (!empty($this->data)) {
 			
+			# fetch whatever's in the DB.
+			$stored = $this->Bug->read(null, $id);
+			
 			# if the bug has been assigned, set the status.
+			# be sure to check the incoming (and not stored) data, since it's
+			# possible the owner and status were changed at the same time.
 			if($this->data{'Bug'}{'owner_id'} && $this->data{'Bug'}{'status'} == 'new') {
 				$this->data{'Bug'}{'status'} = 'assigned';
 			}
 			
-			# TODO: save a note here with info about any status change.
-			
+			# if the status changed, save a note.
+			# this could perhaps be wrapped in a transaction, in case the bug update fails.
+			if ($this->data{'Bug'}{'status'} != $stored{'Bug'}{'status'}) {
+				$this->Bug->Note->create();
+
+				$note_data = array(
+					'bug_id' => $id,
+					'user_id' => $this->Auth->user('id'),
+					'type' => 'status_change',
+					'content' => 'Status changed from ' . $stored{'Bug'}{'status'} . ' to ' . $this->data{'Bug'}{'status'},
+				);
+				
+				if (! $this->Bug->Note->save($note_data)) {
+					$this->Session->setFlash(__('The note could not be saved. Please, try again.', true));
+				}
+			}
+		
 			if ($this->Bug->save($this->data)) {
 				$this->Session->setFlash(__('The bug has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The bug could not be saved. Please, try again.', true));
 			}
-		}
-		if (empty($this->data)) {
+		} else {  #this->data was empty.
 			$this->data = $this->Bug->read(null, $id);
 		}
 
-		$owners{''} = '-----';
-		
-		$owners = array_merge($owners, $this->Bug->Owner->find('list'));
-		$this->set(compact('creators', 'owners'));
+		$owners = $this->Bug->Owner->find('list');
+		$this->set(compact('owners'));
 		
 		$statusOptions = $this->Bug->enumOptions('status');
 		$statusOptions = array_combine(array_values($statusOptions), array_values($statusOptions));  #FormHelper wants keys & values.

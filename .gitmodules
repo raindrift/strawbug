@@ -1,0 +1,3 @@
+[submodule "app/plugins/acl"]
+	path = app/plugins/acl
+	url = git://github.com/interlock/acl_plugin.git

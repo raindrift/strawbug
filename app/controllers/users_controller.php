@@ -17,10 +17,8 @@ class UsersController extends AppController {
 
 	function view($id = null) {
 		# view the currently logged in account by default.
-		$user = $this->Auth->user();
-
 		if(!$id) {
-			$id = $user{'User'}{'id'};
+			$id = $this->Auth->user('id');
 		}
 		
 		if (!$id) {
@@ -34,6 +32,17 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			$this->User->create();
 			if ($this->User->save($this->data)) {
+				# add an ACL entry.
+				$aro = new Aro();
+				$arodata = array(
+					'alias' => $this->data{'User'}{'name'},
+					'parent_id' => 2,  #TODO: look this number up by name.
+					'model' => 'User',
+					'foreign_key' => $this->User->getLastInsertId(),
+				);
+				
+				$aro->save($arodata);
+				
 				$this->Session->setFlash(__('The user has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {

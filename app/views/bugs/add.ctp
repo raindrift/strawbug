@@ -3,7 +3,7 @@
 	<fieldset>
 		<legend><?php __('Add Bug'); ?></legend>
 	<?php
-		echo $this->Form->input('owner_id', array('selected' => '0'));
+		echo $this->Form->input('owner_id', array('empty' => '-', 'selected' => ''));
 		echo $this->Form->input('title');
 		echo $this->Form->input('content');
 	?>
@@ -16,8 +16,6 @@
 
 		<li><?php echo $this->Html->link(__('List Bugs', true), array('action' => 'index'));?></li>
 		<li><?php echo $this->Html->link(__('List Users', true), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Creator', true), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Notes', true), array('controller' => 'notes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Note', true), array('controller' => 'notes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('New User', true), array('controller' => 'users', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

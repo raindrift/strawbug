@@ -61,7 +61,7 @@
 	<?php if (!empty($bug['Note'])):?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
-		<th><?php __('User Id'); ?></th>
+		<th><?php __('User'); ?></th>
 		<th><?php __('Type'); ?></th>
 		<th><?php __('Content'); ?></th>
 		<th><?php __('Created'); ?></th>
@@ -76,7 +76,7 @@
 			}
 		?>
 		<tr<?php echo $class;?>>
-			<td><?php echo $note['user_id'];?></td>
+			<td><?php echo $this->Html->link($note['User']['name'], array('controller' => 'users', 'action' => 'view', $note['User']['id'])); ?></td>
 			<td><?php echo $note['type'];?></td>
 			<td><?php echo $note['content'];?></td>
 			<td><?php echo $note['created'];?></td>
@@ -88,11 +88,12 @@
 		</tr>
 	<?php endforeach; ?>
 	</table>
+	
 <?php endif; ?>
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Note', true), array('controller' => 'notes', 'action' => 'add'));?> </li>
-		</ul>
-	</div>
+	<div class="related">
+
+		<?php echo $this->element('newnote')?>
+	</div>	
+
 </div>

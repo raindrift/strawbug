@@ -16,19 +16,24 @@ class NotesController extends AppController {
 		$this->set('note', $this->Note->read(null, $id));
 	}
 
+
+	# this add function has no associated view, since its only view is an element.
+	# it always redirects.
 	function add() {
 		if (!empty($this->data)) {
 			$this->Note->create();
+			
+			$user = $this->Auth->user();
+			$this->data{'Note'}{'user_id'} = $user{'User'}{'id'};
+			$this->data{'Note'}{'type'} = 'comment';
+			
 			if ($this->Note->save($this->data)) {
 				$this->Session->setFlash(__('The note has been saved', true));
-				$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->Note->Bug->id));
 			} else {
 				$this->Session->setFlash(__('The note could not be saved. Please, try again.', true));
 			}
+			$this->redirect(array('controller' => 'bugs', 'action' => 'view', $this->data{'Note'}{'bug_id'}));
 		}
-		$users = $this->Note->User->find('list');
-		$bugs = $this->Note->Bug->find('list');
-		$this->set(compact('users', 'bugs'));
 	}
 
 	function edit($id = null) {
