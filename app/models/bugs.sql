@@ -14,4 +14,4 @@ create table bugs (
 	key assigned (owner_id),
 	key created (created),
 	key modified (modified)
-) type = innodb; -- necessary because updating records here will require a transaction for concurrency checking
+) type = myisam;
