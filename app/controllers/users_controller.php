@@ -150,12 +150,12 @@ class UsersController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		};
 		
-		# if no new password was supplied, don't update that part.
-		if(array_key_exists('password', $this->data{'User'}) && !$this->data{'User'}{'password_confirm'}) {
-			unset($this->data{'User'}{'password'});
-		}
-		
 		if (!empty($this->data)) {
+			# if no new password was supplied, don't update that part.
+			if(array_key_exists('password', $this->data{'User'}) && !$this->data{'User'}{'password_confirm'}) {
+				unset($this->data{'User'}{'password'});
+			}
+			
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(__('The user has been saved', true));
 				#$this->redirect(array('action' => 'index'));
