@@ -17,8 +17,5 @@
 
 		<li><?php echo $this->Html->link(__('List Users', true), array('action' => 'index'));?></li>
 		<li><?php echo $this->Html->link(__('List Bugs', true), array('controller' => 'bugs', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Bugs Created', true), array('controller' => 'bugs', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Notes', true), array('controller' => 'notes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Note', true), array('controller' => 'notes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

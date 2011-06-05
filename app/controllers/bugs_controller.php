@@ -62,6 +62,16 @@ class BugsController extends AppController {
 			$this->Session->setFlash(__('Invalid bug', true));
 			$this->redirect(array('action' => 'index'));
 		}
+
+		if(!$this->Acl->check(
+			array('model' => 'User', 'foreign_key' => $this->Auth->user('id')),
+			'Bug',
+			'update'
+		)) {
+			$this->Session->setFlash(__('Insufficient permissions to edit this bug.', true));
+			$this->redirect(array('action' => 'index'));
+		};
+		
 		if (!empty($this->data)) {
 			
 			# fetch whatever's in the DB.
@@ -115,67 +125,16 @@ class BugsController extends AppController {
 			$this->Session->setFlash(__('Invalid id for bug', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		if ($this->Bug->delete($id)) {
-			$this->Session->setFlash(__('Bug deleted', true));
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->Session->setFlash(__('Bug was not deleted', true));
-		$this->redirect(array('action' => 'index'));
-	}
-	function admin_index() {
-		$this->Bug->recursive = 0;
-		$this->set('bugs', $this->paginate());
-	}
-
-	function admin_view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid bug', true));
+		
+		if(!$this->Acl->check(
+			array('model' => 'User', 'foreign_key' => $this->Auth->user('id')),
+			'Bug',
+			'delete'
+		)) {
+			$this->Session->setFlash(__('Insufficient permissions to delete this bug.', true));
 			$this->redirect(array('action' => 'index'));
-		}
-		$this->set('bug', $this->Bug->read(null, $id));
-	}
-
-	function admin_add() {
-		if (!empty($this->data)) {
-			$this->Bug->create();
-			if ($this->Bug->save($this->data)) {
-				$this->Session->setFlash(__('The bug has been saved', true));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The bug could not be saved. Please, try again.', true));
-			}
-		}
-		$creators = $this->Bug->Creator->find('list');
-		$owners = $this->Bug->Owner->find('list');
-		$this->set(compact('creators', 'owners'));
-	}
-
-	function admin_edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid bug', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		if (!empty($this->data)) {
-			if ($this->Bug->save($this->data)) {
-				$this->Session->setFlash(__('The bug has been saved', true));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The bug could not be saved. Please, try again.', true));
-			}
-		}
-		if (empty($this->data)) {
-			$this->data = $this->Bug->read(null, $id);
-		}
-		$creators = $this->Bug->Creator->find('list');
-		$owners = $this->Bug->Owner->find('list');
-		$this->set(compact('creators', 'owners'));
-	}
-
-	function admin_delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for bug', true));
-			$this->redirect(array('action'=>'index'));
-		}
+		};
+		
 		if ($this->Bug->delete($id)) {
 			$this->Session->setFlash(__('Bug deleted', true));
 			$this->redirect(array('action'=>'index'));
