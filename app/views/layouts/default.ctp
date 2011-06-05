@@ -36,7 +36,16 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1><?php echo $this->Html->link(__('Strawbug', true), '/'); ?></h1>
+			<h1><?php echo $this->Html->link(__('Strawbug', true), '/'); ?>
+			<div style="float:right">
+				<?php
+					if($currentUser) {
+						echo $currentUser{'name'};
+						echo ' [' . $this->Html->link(__('logout', true), array('controller' => 'users', 'action' => 'logout')) . ']';
+				}
+				?>
+			</div>
+			</h1>
 		</div>
 		<div id="content">
 

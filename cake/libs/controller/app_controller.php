@@ -37,4 +37,9 @@ class AppController extends Controller {
 	// so session component is lost if it's not included here!
 	// The entire app is authenticated, so auth everywhere is okay.
 	var $components = array('Auth', 'Session', 'Acl');
+	
+	function beforeFilter() {
+		$user = $this->Auth->user();
+		$this->set('currentUser', $user{'User'});
+	}
 }
