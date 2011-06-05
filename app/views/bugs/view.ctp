@@ -6,6 +6,11 @@
 			<?php echo $bug['Bug']['id']; ?>
 			&nbsp;
 		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Title'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $bug['Bug']['title']; ?>
+			&nbsp;
+		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Creator'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $this->Html->link($bug['Creator']['name'], array('controller' => 'users', 'action' => 'view', $bug['Creator']['id'])); ?>
@@ -16,19 +21,9 @@
 			<?php echo $this->Html->link($bug['Owner']['name'], array('controller' => 'users', 'action' => 'view', $bug['Owner']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Title'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $bug['Bug']['title']; ?>
-			&nbsp;
-		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Status'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $bug['Bug']['status']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Content'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $bug['Bug']['content']; ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
@@ -57,19 +52,22 @@
 		<li><?php echo $this->Html->link(__('All Bugs', true), array('action' => 'index')); ?> </li>
 	</ul>
 </div>
+
+<div class="actions">
+	&nbsp;
+</div>
+
+<div class="bug content">
+
+			<?php echo $this->Text->autoLink($this->Breaks->addBreaks($bug['Bug']['content'])); ?>
+			&nbsp;
+
+</div>
+
 <div class="related">
 	<h3><?php __('Notes');?></h3>
 	<?php if (!empty($bug['Note'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php __('User'); ?></th>
-		<th><?php __('Type'); ?></th>
-		<th><?php __('Content'); ?></th>
-		<th><?php __('Created'); ?></th>
-		<?php if($bugPermissions{'delete'}) { ?>
-		<th class="actions"><?php __('Actions');?></th>
-		<?php } ?>
-	</tr>
+
 	<?php
 		$i = 0;
 		foreach ($bug['Note'] as $note):
@@ -78,19 +76,40 @@
 				$class = ' class="altrow"';
 			}
 		?>
-		<tr<?php echo $class;?>>
-			<td><?php echo $this->Html->link($note['User']['name'], array('controller' => 'users', 'action' => 'view', $note['User']['id'])); ?></td>
-			<td><?php echo $note['type'];?></td>
-			<td><?php echo $note['content'];?></td>
-			<td><?php echo $note['created'];?></td>
-			<?php if($bugPermissions{'delete'}) { ?>
-			<td class="actions">
-					<?php echo $this->Html->link(__('Delete', true), array('controller' => 'notes', 'action' => 'delete', $note['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $note['id'])); ?>
-			</td>
+		<div class="note">
+			<div class="note_data">
+			<dl class="note">
+				<?php $i = 0; $class = ' class="altrow"';?>
+				<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('User'); ?></dt>
+				<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+					<?php echo $this->Html->link($note['User']['name'], array('controller' => 'users', 'action' => 'view', $note['User']['id'])); ?>
+					&nbsp;
+				</dd>
+
+				<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Date'); ?></dt>
+				<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+					<?php echo $note['created'];?>
+					&nbsp;
+				</dd>
+			
+				<?php if($bugPermissions{'delete'}) { ?>
+					<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Actions'); ?></dt>
+					<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+						<?php echo $this->Html->link(__('Delete', true), array('controller' => 'notes', 'action' => 'delete', $note['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $note['id'])); ?>
+						&nbsp;
+					</dd>
+				<?php } ?>
+			</div>
+			<?php if($note['type'] == 'status_change') { ?>
+				<div class="note_content_minor">
+			<?php } else { ?>
+				<div class="note_content">
 			<?php } ?>
-		</tr>
+				<?php echo $this->Text->autoLink($this->Breaks->addBreaks($note['content']));?>
+			</div>
+		</div>
+			
 	<?php endforeach; ?>
-	</table>
 	
 <?php endif; ?>
 

@@ -4,7 +4,6 @@
 		<legend><?php __('Add Note'); ?></legend>
 	<?php
 		echo $this->Form->input('bug_id', array('type' => 'hidden', 'value' => $bug['Bug']['id']));
-		echo $this->Form->input('type');
 		echo $this->Form->input('content');
 	?>
 	</fieldset>
